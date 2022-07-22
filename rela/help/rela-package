@@ -1,0 +1,58 @@
+rela                  package:rela                  R Documentation
+
+_S_c_a_l_e _i_t_e_m _a_n_a_l_y_s_i_s _w_i_t_h _s_t_a_n_d_a_r_d _e_r_r_o_r_s _a_n_d _p_r_i_n_c_i_p_a_l _a_x_i_s _f_a_c_t_o_r_i_n_g
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     The package's functions analyze scale items as a collective
+     measure  providing information both on the item and scale level.
+     Cronbach's reliability estimates are reported both in the original
+     and standardized form along with respective standard  errors and
+     confidence interval lower and upper bounds. Further the principal
+     axis factoring  function (paf) included in the package allows to
+     preliminarily screen the items if they load on the same single
+     latent construct. Both functions' output can be viewed abbreviated
+     using summary() as well as in graphical form using plot().
+
+_D_e_t_a_i_l_s:
+
+
+       Package:   rela
+       Type:      Package
+       Version:   4.1
+       Date:      2009-10-25
+       License:   Artistic
+       LazyLoad:  yes
+
+     The package contains two function (itemanal and paf) which report
+     a list of scale item analytic statistics.
+
+_A_u_t_h_o_r(_s):
+
+     Michael Chajewski ( <URL: http://www.chajewski.com> )
+
+_R_e_f_e_r_e_n_c_e_s:
+
+     Cronbach, L. J. (1951). Coefficient alpha and the internal
+     structure of tests. _Psychometrika, 16(3)_, 297-334. 
+
+      Duhachek, A. & Iacobucci, D. (2004). Alpha's standard error
+     (ASE): An accurate and precise confidence interval estimate.
+     _Journal of Applied Psychology, 89(5)_, 792-808. 
+
+      Kim, J., & Mueller, C. W. (1978). _Introduction to factor
+     analysis: What it is and how to do it_. SAGE Publications: Newbury
+     Park, CA. 
+
+      Nunnally, J. C. & Bernstein, I. H. (1994). _Psychometric theory_
+     (3 ed.). McGraw-Hill: New York, NY. 
+
+      Kaiser, H. F. & Cerny, B. A. (1979). Factor analysis of the image
+     correlation matrix. _Educational and Psychological Measurement_,
+     39, 711-714.
+
+      Pett, M. A., Lackey, N. R., & Sullivan, J. J. (2003). _Making
+     sense of factor analysis: The use of factor analysis for
+     instrument development in health care research_. SAGE
+     Publications: Thousand Oaks, CA.
+

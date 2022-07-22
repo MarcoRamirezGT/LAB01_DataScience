@@ -1,0 +1,93 @@
+\HeaderA{itemanal}{Item analysis function}{itemanal}
+\keyword{manip}{itemanal}
+\keyword{misc}{itemanal}
+\begin{Description}\relax
+This function enables the user to evaluate the functioning of two or more items as a 
+coherent scale. Among the traditionally used Cronbach's Alpha the function also produces standardized estimates 
+as well as Duhachek and Iacobucci's (2004) proposed standrad errors and respective confidence intervals for the
+reliability coefficients. Further, the function provides a bootstrap estimate of the convidance interval of both 
+the regular and standardized alpha values. The function's output can be used to produce three plots: 
+A density plot of the alpha and standardized alpha bootstrap simulations, a line plot of the "if item deleted" 
+alpha values by each item and a star plot for all of the items for their respective "if item deleted" scale values. 
+These plots can be called by submitting the output object of the function to the plot() statement. Similarly, the
+output can be viewed in an abbreviated form by submitting the output object to the summary() function.
+\end{Description}
+\begin{Usage}
+\begin{verbatim}itemanal(object, SE.par = 1.96, boots = 1000)\end{verbatim}
+\end{Usage}
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{object}] Numeric dataset (usually a coerced matrix from a prior data frame) containing all items of the scale. The dataset is arranged observations (rows) by measure items (columns). 
+\item[\code{SE.par}] Confidence interval corresponding Z-score. By default set to the 95 \% confidence interval Z-score of 1.96. 
+\item[\code{boots}] Number of boot strap samples computed. By default 1,000 simulations are estimated. 
+\end{ldescription}
+\end{Arguments}
+\begin{Details}\relax
+The function is sensitive to the how the dataset was compiled. Using the cbind function will often return a matirx that appears numeric but in reality functions as a numeric compiled list. If system error messages occur try transforming the dataset using as.matrix(data.frame(your.dataset)).
+\end{Details}
+\begin{Value}
+Output consists of a list with the following values:\\
+
+\begin{ldescription}
+\item[\code{Variables}] General information about the entered items such as item type, number of cases used in the analysis, minimum, maximum values and item sum. 
+\item[\code{Tendency}] Contains the measures of central tendancy: The respective item mean, median, standard deviation (SD), standard error of the mean (SE.mean) , lower and upper values of a 95 \% confidence interval of the mean and item variance. 
+\item[\code{Skewness}] Skewness, standard error of the skew, lower and upper values of the skew. 
+\item[\code{Kurtosis}] Kurtosis, standard error of kurtosis as well as its respective 95 \% confidence interval values. 
+\item[\code{Covariance}] The covariance matrix of all items in the dataset. 
+\item[\code{Correlation}] The correlation matrix of all submitted items. 
+\item[\code{Alpha}] The number of items in the scale as well as the covariance based Cronbach's alpha estimate. 
+\item[\code{Conf.Alpha}] Standard error of Cronbach's alpha with the associated lower and upper bound confidence interval values. 
+\item[\code{Bootstrap.Simmulations}] The regular (covariance based) alpha bootstrap simulated estimates. 
+\item[\code{Alpha.Bootstrap}] Bootstrap mean, standard error and confidence interval lower and upper limits. 
+\item[\code{Std.Alpha}] The number of items in the scale as well as the correlation based Cronbach's alpha estimate. 
+\item[\code{Conf.Std.Alpha}] Standard error of the standardized Cronbach's alpha with the associated lower and upper bound confidence interval values. 
+\item[\code{Bootstrap.Std.Simmulations}] The standardized (correlation based) alpha bootstrap simulated estimates. 
+\item[\code{Alpha.Std.Bootstrap}] Standardized bootstrap mean, standard error and confidence interval lower and upper limits. 
+\item[\code{Scale.Stats}] Changes in scale statistics upon deletion of any one item in the scale. Contains scale mean and variance. 
+\item[\code{Alpha.Stats}] Changes in the scale's reliability estimate alpha upon deletion of any one item. Contains, corrected total item correlation, squared multiple correlation, adjusted alpha statistic without given item. 
+\item[\code{call}] Submitted function call. 
+\end{ldescription}
+\end{Value}
+\begin{Note}\relax
+Under the current version of this function/package missing data is deleted listwise. Consequently only full cases are used in determining scale reliability. Also, note that the legends for the plots are placed interactively. 
+Furthermore, the default plot function for the itemanal() object uses a windows() statement to produce several 
+plots. This prevents prior plots from being replaced at the same time allowing for numerous plots to be produced.
+However, this option may not be fully functional in MAC and Linux environemnts since the function calls on a
+windows metafile.
+\end{Note}
+\begin{Author}\relax
+Michael Chajewski ( \url{http://www.chajewski.com} )
+\end{Author}
+\begin{References}\relax
+Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. \emph{Psychometrika, 16(3)}, 297-334. \\
+\\
+Duhachek, A. \& Iacobucci, D. (2004). Alpha's standard error (ASE): An accurate and precise confidence interval estimate. \emph{Journal of Applied Psychology, 89(5)}, 792-808. \\
+\\
+Kim, J., \& Mueller, C. W. (1978). \emph{Introduction to factor analysis: What it is and how to do it}. SAGE Publications: Newbury Park, CA. \\
+\\
+Nunnally, J. C. \& Bernstein, I. H. (1994). \emph{Psychometric theory} (3 ed.). McGraw-Hill: New York, NY. \\
+\\
+Kaiser, H. F. \& Cerny, B. A. (1979). Factor analysis of the image correlation matrix. \emph{Educational and Psychological Measurement}, 39, 711-714.\\
+\\
+Pett, M. A., Lackey, N. R., \& Sullivan, J. J. (2003). \emph{Making sense of factor analysis: The use of factor analysis for instrument development in health care research}. SAGE Publications: Thousand Oaks, CA.
+\end{References}
+\begin{Examples}
+\begin{ExampleCode}
+
+library(rela)
+
+Belts <- Seatbelts[,1:7]
+Belts.item <- itemanal(Belts)
+Belts.item
+summary(Belts.item)
+plot(Belts.item)
+
+Belts2 <- Belts[,-5]
+Belts2 <- Belts2[,-5] 
+Belts.item2 <- itemanal(Belts2)
+Belts.item2
+summary(Belts.item2)
+plot(Belts.item2)
+\end{ExampleCode}
+\end{Examples}
+

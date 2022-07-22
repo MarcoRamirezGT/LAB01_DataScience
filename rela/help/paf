@@ -1,0 +1,152 @@
+paf                   package:rela                   R Documentation
+
+_P_r_i_n_c_i_p_a_l _A_x_i_s _F_a_c_t_o_r_i_n_g
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     This function performs a prinxipal axis factor analysis providing
+     the user with a set of preliminary informative estimates regarding
+     the dimensionality and scale functioning of the submitted items. 
+     The function does not allow for rotations and is by no means
+     considered a full factor analysis tool, but rather  a supplemental
+     module. The function's output object can be submitted to the
+     summary() function for an abbreviated version of the results.
+     Further, the output object can be graphed, using plot(), producing
+     four plots: a comparison of the reproduced correlation residuals,
+     initial and final item communalities (with an interactively placed
+     legend),  measures of sampling adequacy, and an Eigenvalue scree
+     plot.
+
+_U_s_a_g_e:
+
+     paf(object, eigcrit=1, convcrit=.001)
+
+_A_r_g_u_m_e_n_t_s:
+
+  object: Numeric dataset (usually a coerced matrix from a prior data
+          frame) containing all items of the scale. The dataset is
+          arranged observations (rows) by measure items (columns). 
+
+ eigcrit: Eigenvalue criterion cut-off to be used in the iterative
+          estimation process. By default set to use all eigenvalues
+          greater than 1.
+
+convcrit: The convergence criterion determining the number of
+          iterations by computing difference scores between prior and
+          estimated communalities. By default set to be less than .001
+          for each compared cell. 
+
+_D_e_t_a_i_l_s:
+
+     This function is intended as a companion to the itemanal()
+     function in this package (rela). Its primiary goal is to provide
+     the researcher with additional information when exploring the
+     dimensionality and reliability of a scale.  Moreover, the when
+     called the function will produce four plots: A scree plot of the
+     eigenvalues of the original correlation matrix, a plot of the
+     measure of sampling adequacy values for each item, a comparative
+     plot for the initial and  final communalities, and a plot series
+     for the correlation residuals for each individual item against all
+     other items.
+
+_V_a_l_u_e:
+
+     Output consists of a list with the following values:
+
+Correlation: Correlation matrix of the submitted dataset. 
+
+Anti.Image.Cov: The Anti Image Covariance Matrix. 
+
+Anti.Image.Cor: The Anti Image Correlation Matrix. 
+
+     KMO: The Kaiser-Meyer-Olkin measure of sampling adequacy test.
+
+     MSA: Individual measures of sampling adequacy for each item. 
+
+Bartlett: Bartlett's Test of Sphericity for covariance matrices. 
+
+Communalities: Initial and final communality extractions. 
+
+Iterations: Number of iterations needed to meet convergence criterion. 
+
+Eigenvalues: All eigenvalues for extracted at each iteration. 
+
+Communality.Iterations: All estimated communalities for each iteration
+          submited to the convergence test. 
+
+Criterion.Differences: Difference scores between estimated
+          communalities. 
+
+Factor.Loadings: Final item factor loadings on extracted latent
+          components. 
+
+Reproduced.Cor: Factor loading reproduced correlation matrix. 
+
+Residuals: Correlation residuals (observed minus reproduced
+          correlations). 
+
+     RMS: Root mean square errors (of the correlation residuals). 
+
+    call: Submitted arguments to the paf() function. 
+
+_N_o_t_e:
+
+     Under the current version of this function/package missing data is
+     deleted listwise. Consequently only full cases are used in
+     determining scale reliability. Furthermore, the default plot
+     function for the itemanal() object uses a windows() statement to
+     produce several plots. This prevents prior plots from being
+     replaced at the same time allowing for numerous plots to be
+     produced. However, this option may not be fully functional in MAC
+     and Linux environemnts since the function calls on a windows
+     metafile.
+
+_A_u_t_h_o_r(_s):
+
+     Michael Chajewski ( <URL: http://www.chajewski.com> )
+
+_R_e_f_e_r_e_n_c_e_s:
+
+     Cronbach, L. J. (1951). Coefficient alpha and the internal
+     structure of tests. _Psychometrika, 16(3)_, 297-334. 
+
+      Duhachek, A. & Iacobucci, D. (2004). Alpha's standard error
+     (ASE): An accurate and precise confidence interval estimate.
+     _Journal of Applied Psychology, 89(5)_, 792-808. 
+
+      Kim, J., & Mueller, C. W. (1978). _Introduction to factor
+     analysis: What it is and how to do it_. SAGE Publications: Newbury
+     Park, CA. 
+
+      Nunnally, J. C. & Bernstein, I. H. (1994). _Psychometric theory_
+     (3 ed.). McGraw-Hill: New York, NY. 
+
+      Kaiser, H. F. & Cerny, B. A. (1979). Factor analysis of the image
+     correlation matrix. _Educational and Psychological Measurement_,
+     39, 711-714.
+
+      Pett, M. A., Lackey, N. R., & Sullivan, J. J. (2003). _Making
+     sense of factor analysis: The use of factor analysis for
+     instrument development in health care research_. SAGE
+     Publications: Thousand Oaks, CA.
+
+_E_x_a_m_p_l_e_s:
+
+     library(rela)
+
+     Belts <- Seatbelts[,1:7]
+     summary(Belts)
+
+     paf.belt <- paf(Belts)
+     paf.belt
+     summary(paf.belt)
+     plot(paf.belt)
+
+     Belts2 <- Belts[,-5]
+     Belts2 <- Belts2[,-5] 
+
+     paf.belt2 <- paf(Belts2)
+     paf.belt2
+     summary(paf.belt2)
+     plot(paf.belt2)
+

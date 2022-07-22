@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Principal Axis Factoring</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for paf {rela}"><tr><td>paf {rela}</td><td align="right">R Documentation</td></tr></table>
+<h2>Principal Axis Factoring</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This function performs a prinxipal axis factor analysis providing the user with a set
+of preliminary informative estimates regarding the dimensionality and scale functioning of the submitted items. 
+The function does not allow for rotations and is by no means considered a full factor analysis tool, but rather 
+a supplemental module. The function's output object can be submitted to the summary() function for an abbreviated
+version of the results. Further, the output object can be graphed, using plot(), producing four plots: a comparison
+of the reproduced correlation residuals, initial and final item communalities (with an interactively placed legend), 
+measures of sampling adequacy, and an Eigenvalue scree plot.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>paf(object, eigcrit=1, convcrit=.001)</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+Numeric dataset (usually a coerced matrix from a prior data frame) containing all items of the scale. The dataset is arranged observations (rows) by measure items (columns). </td></tr>
+<tr valign="top"><td><code>eigcrit</code></td>
+<td>
+Eigenvalue criterion cut-off to be used in the iterative estimation process. By default set to use all eigenvalues greater than 1.</td></tr>
+<tr valign="top"><td><code>convcrit</code></td>
+<td>
+The convergence criterion determining the number of iterations by computing difference scores between prior and estimated communalities. By default set to be less than .001 for each compared cell. </td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+This function is intended as a companion to the itemanal() function in this package (rela). Its primiary goal is to provide the researcher with additional information when exploring the dimensionality and reliability of a scale. 
+Moreover, the when called the function will produce four plots: A scree plot of the eigenvalues of the original correlation matrix, a plot of the measure of sampling adequacy values for each item, a comparative plot for the initial and 
+final communalities, and a plot series for the correlation residuals for each individual item against all other items.
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+Output consists of a list with the following values:<br>
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>Correlation</code></td>
+<td>
+Correlation matrix of the submitted dataset. </td></tr>
+<tr valign="top"><td><code>Anti.Image.Cov</code></td>
+<td>
+The Anti Image Covariance Matrix. </td></tr>
+<tr valign="top"><td><code>Anti.Image.Cor</code></td>
+<td>
+The Anti Image Correlation Matrix. </td></tr>
+<tr valign="top"><td><code>KMO</code></td>
+<td>
+The Kaiser-Meyer-Olkin measure of sampling adequacy test.</td></tr>
+<tr valign="top"><td><code>MSA</code></td>
+<td>
+Individual measures of sampling adequacy for each item. </td></tr>
+<tr valign="top"><td><code>Bartlett</code></td>
+<td>
+Bartlett's Test of Sphericity for covariance matrices. </td></tr>
+<tr valign="top"><td><code>Communalities</code></td>
+<td>
+Initial and final communality extractions. </td></tr>
+<tr valign="top"><td><code>Iterations</code></td>
+<td>
+Number of iterations needed to meet convergence criterion. </td></tr>
+<tr valign="top"><td><code>Eigenvalues</code></td>
+<td>
+All eigenvalues for extracted at each iteration. </td></tr>
+<tr valign="top"><td><code>Communality.Iterations</code></td>
+<td>
+All estimated communalities for each iteration submited to the convergence test. </td></tr>
+<tr valign="top"><td><code>Criterion.Differences</code></td>
+<td>
+Difference scores between estimated communalities. </td></tr>
+<tr valign="top"><td><code>Factor.Loadings</code></td>
+<td>
+Final item factor loadings on extracted latent components. </td></tr>
+<tr valign="top"><td><code>Reproduced.Cor</code></td>
+<td>
+Factor loading reproduced correlation matrix. </td></tr>
+<tr valign="top"><td><code>Residuals</code></td>
+<td>
+Correlation residuals (observed minus reproduced correlations). </td></tr>
+<tr valign="top"><td><code>RMS</code></td>
+<td>
+Root mean square errors (of the correlation residuals). </td></tr>
+<tr valign="top"><td><code>call</code></td>
+<td>
+Submitted arguments to the paf() function. </td></tr>
+</table>
+
+<h3>Note</h3>
+
+<p>
+Under the current version of this function/package missing data is deleted listwise. Consequently only full cases are used in determining scale reliability. Furthermore, the default plot function for the itemanal() object uses a windows() statement to produce several plots. This prevents prior plots from being replaced at the same time allowing for numerous plots to be produced. However, this option may not be fully functional in MAC and Linux environemnts since the function calls on a windows metafile.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>
+Michael Chajewski ( <a href="http://www.chajewski.com">http://www.chajewski.com</a> )
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. <EM>Psychometrika, 16(3)</EM>, 297-334. <br>
+<br>
+Duhachek, A. &amp; Iacobucci, D. (2004). Alpha's standard error (ASE): An accurate and precise confidence interval estimate. <EM>Journal of Applied Psychology, 89(5)</EM>, 792-808. <br>
+<br>
+Kim, J., &amp; Mueller, C. W. (1978). <EM>Introduction to factor analysis: What it is and how to do it</EM>. SAGE Publications: Newbury Park, CA. <br>
+<br>
+Nunnally, J. C. &amp; Bernstein, I. H. (1994). <EM>Psychometric theory</EM> (3 ed.). McGraw-Hill: New York, NY. <br>
+<br>
+Kaiser, H. F. &amp; Cerny, B. A. (1979). Factor analysis of the image correlation matrix. <EM>Educational and Psychological Measurement</EM>, 39, 711-714.<br>
+<br>
+Pett, M. A., Lackey, N. R., &amp; Sullivan, J. J. (2003). <EM>Making sense of factor analysis: The use of factor analysis for instrument development in health care research</EM>. SAGE Publications: Thousand Oaks, CA.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(rela)
+
+Belts &lt;- Seatbelts[,1:7]
+summary(Belts)
+
+paf.belt &lt;- paf(Belts)
+paf.belt
+summary(paf.belt)
+plot(paf.belt)
+
+Belts2 &lt;- Belts[,-5]
+Belts2 &lt;- Belts2[,-5] 
+
+paf.belt2 &lt;- paf(Belts2)
+paf.belt2
+summary(paf.belt2)
+plot(paf.belt2)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>rela</em> version 4.1 <a href="00Index.html">Index</a>]</div>
+
+</body></html>

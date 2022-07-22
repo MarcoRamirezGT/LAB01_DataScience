@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>R: Item analysis function</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="../../R.css">
+</head><body>
+
+<table width="100%" summary="page for itemanal {rela}"><tr><td>itemanal {rela}</td><td align="right">R Documentation</td></tr></table>
+<h2>Item analysis function</h2>
+
+
+<h3>Description</h3>
+
+<p>
+This function enables the user to evaluate the functioning of two or more items as a 
+coherent scale. Among the traditionally used Cronbach's Alpha the function also produces standardized estimates 
+as well as Duhachek and Iacobucci's (2004) proposed standrad errors and respective confidence intervals for the
+reliability coefficients. Further, the function provides a bootstrap estimate of the convidance interval of both 
+the regular and standardized alpha values. The function's output can be used to produce three plots: 
+A density plot of the alpha and standardized alpha bootstrap simulations, a line plot of the "if item deleted" 
+alpha values by each item and a star plot for all of the items for their respective "if item deleted" scale values. 
+These plots can be called by submitting the output object of the function to the plot() statement. Similarly, the
+output can be viewed in an abbreviated form by submitting the output object to the summary() function.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>itemanal(object, SE.par = 1.96, boots = 1000)</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>object</code></td>
+<td>
+Numeric dataset (usually a coerced matrix from a prior data frame) containing all items of the scale. The dataset is arranged observations (rows) by measure items (columns). </td></tr>
+<tr valign="top"><td><code>SE.par</code></td>
+<td>
+Confidence interval corresponding Z-score. By default set to the 95 % confidence interval Z-score of 1.96. </td></tr>
+<tr valign="top"><td><code>boots</code></td>
+<td>
+Number of boot strap samples computed. By default 1,000 simulations are estimated. </td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The function is sensitive to the how the dataset was compiled. Using the cbind function will often return a matirx that appears numeric but in reality functions as a numeric compiled list. If system error messages occur try transforming the dataset using as.matrix(data.frame(your.dataset)).
+</p>
+
+
+<h3>Value</h3>
+
+<p>
+Output consists of a list with the following values:<br>
+</p>
+<table summary="R argblock">
+<tr valign="top"><td><code>Variables</code></td>
+<td>
+General information about the entered items such as item type, number of cases used in the analysis, minimum, maximum values and item sum. </td></tr>
+<tr valign="top"><td><code>Tendency</code></td>
+<td>
+Contains the measures of central tendancy: The respective item mean, median, standard deviation (SD), standard error of the mean (SE.mean) , lower and upper values of a 95 % confidence interval of the mean and item variance. </td></tr>
+<tr valign="top"><td><code>Skewness</code></td>
+<td>
+Skewness, standard error of the skew, lower and upper values of the skew. </td></tr>
+<tr valign="top"><td><code>Kurtosis</code></td>
+<td>
+Kurtosis, standard error of kurtosis as well as its respective 95 % confidence interval values. </td></tr>
+<tr valign="top"><td><code>Covariance</code></td>
+<td>
+The covariance matrix of all items in the dataset. </td></tr>
+<tr valign="top"><td><code>Correlation</code></td>
+<td>
+The correlation matrix of all submitted items. </td></tr>
+<tr valign="top"><td><code>Alpha</code></td>
+<td>
+The number of items in the scale as well as the covariance based Cronbach's alpha estimate. </td></tr>
+<tr valign="top"><td><code>Conf.Alpha</code></td>
+<td>
+Standard error of Cronbach's alpha with the associated lower and upper bound confidence interval values. </td></tr>
+<tr valign="top"><td><code>Bootstrap.Simmulations</code></td>
+<td>
+The regular (covariance based) alpha bootstrap simulated estimates. </td></tr>
+<tr valign="top"><td><code>Alpha.Bootstrap</code></td>
+<td>
+Bootstrap mean, standard error and confidence interval lower and upper limits. </td></tr>
+<tr valign="top"><td><code>Std.Alpha</code></td>
+<td>
+The number of items in the scale as well as the correlation based Cronbach's alpha estimate. </td></tr>
+<tr valign="top"><td><code>Conf.Std.Alpha</code></td>
+<td>
+Standard error of the standardized Cronbach's alpha with the associated lower and upper bound confidence interval values. </td></tr>
+<tr valign="top"><td><code>Bootstrap.Std.Simmulations</code></td>
+<td>
+The standardized (correlation based) alpha bootstrap simulated estimates. </td></tr>
+<tr valign="top"><td><code>Alpha.Std.Bootstrap</code></td>
+<td>
+Standardized bootstrap mean, standard error and confidence interval lower and upper limits. </td></tr>
+<tr valign="top"><td><code>Scale.Stats</code></td>
+<td>
+Changes in scale statistics upon deletion of any one item in the scale. Contains scale mean and variance. </td></tr>
+<tr valign="top"><td><code>Alpha.Stats</code></td>
+<td>
+Changes in the scale's reliability estimate alpha upon deletion of any one item. Contains, corrected total item correlation, squared multiple correlation, adjusted alpha statistic without given item. </td></tr>
+<tr valign="top"><td><code>call</code></td>
+<td>
+Submitted function call. </td></tr>
+</table>
+
+<h3>Note</h3>
+
+<p>
+Under the current version of this function/package missing data is deleted listwise. Consequently only full cases are used in determining scale reliability. Also, note that the legends for the plots are placed interactively. 
+Furthermore, the default plot function for the itemanal() object uses a windows() statement to produce several 
+plots. This prevents prior plots from being replaced at the same time allowing for numerous plots to be produced.
+However, this option may not be fully functional in MAC and Linux environemnts since the function calls on a
+windows metafile.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>
+Michael Chajewski ( <a href="http://www.chajewski.com">http://www.chajewski.com</a> )
+</p>
+
+
+<h3>References</h3>
+
+<p>
+Cronbach, L. J. (1951). Coefficient alpha and the internal structure of tests. <EM>Psychometrika, 16(3)</EM>, 297-334. <br>
+<br>
+Duhachek, A. &amp; Iacobucci, D. (2004). Alpha's standard error (ASE): An accurate and precise confidence interval estimate. <EM>Journal of Applied Psychology, 89(5)</EM>, 792-808. <br>
+<br>
+Kim, J., &amp; Mueller, C. W. (1978). <EM>Introduction to factor analysis: What it is and how to do it</EM>. SAGE Publications: Newbury Park, CA. <br>
+<br>
+Nunnally, J. C. &amp; Bernstein, I. H. (1994). <EM>Psychometric theory</EM> (3 ed.). McGraw-Hill: New York, NY. <br>
+<br>
+Kaiser, H. F. &amp; Cerny, B. A. (1979). Factor analysis of the image correlation matrix. <EM>Educational and Psychological Measurement</EM>, 39, 711-714.<br>
+<br>
+Pett, M. A., Lackey, N. R., &amp; Sullivan, J. J. (2003). <EM>Making sense of factor analysis: The use of factor analysis for instrument development in health care research</EM>. SAGE Publications: Thousand Oaks, CA.
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+
+library(rela)
+
+Belts &lt;- Seatbelts[,1:7]
+Belts.item &lt;- itemanal(Belts)
+Belts.item
+summary(Belts.item)
+plot(Belts.item)
+
+Belts2 &lt;- Belts[,-5]
+Belts2 &lt;- Belts2[,-5] 
+Belts.item2 &lt;- itemanal(Belts2)
+Belts.item2
+summary(Belts.item2)
+plot(Belts.item2)
+</pre>
+
+
+
+<hr><div align="center">[Package <em>rela</em> version 4.1 <a href="00Index.html">Index</a>]</div>
+
+</body></html>

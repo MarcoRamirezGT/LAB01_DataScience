@@ -1,0 +1,17 @@
+Entry: itemanal
+Aliases: itemanal
+Keywords: manip misc
+Description: Item analysis function
+URL: ../../../library/rela/html/itemanal.html
+
+Entry: paf
+Aliases: paf
+Keywords: manip misc
+Description: Principal Axis Factoring
+URL: ../../../library/rela/html/paf.html
+
+Entry: rela
+Aliases: rela-package rela
+Keywords: 
+Description: Scale item analysis with standard errors and principal axis factoring
+URL: ../../../library/rela/html/rela-package.html

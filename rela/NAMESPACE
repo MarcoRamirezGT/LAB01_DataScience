@@ -1,0 +1,8 @@
+export( itemanal)
+export( paf )
+S3method(plot, itemanal)
+S3method(plot, paf)
+S3method(summary, itemanal)
+S3method(summary, paf)
+
+
