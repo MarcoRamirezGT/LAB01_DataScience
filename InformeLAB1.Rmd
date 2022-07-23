@@ -12,10 +12,51 @@ knitr::opts_chunk$set(echo = TRUE)
 # Análisis Exploratorio
 
 ```{r include= FALSE}
-
-
-
 db<-read.csv('train.csv')
+
+t1<-table(db$MSZoning)
+t2<-table(db$Street)
+t3<-table(db$Alley)
+t4<-table(db$LotShape)
+t5<-table(db$LandContour)
+t6<-table(db$Utilities)
+t7<-table(db$LotConfig)
+t8<-table(db$LandSlope)
+t9<-table(db$Neighborhood)
+t10<-table(db$Condition1)
+t11<-table(db$Condition2)
+t12<-table(db$BldgType)
+t13<-table(db$HouseStyle)
+t14<-table(db$RoofStyle)
+t15<-table(db$RoofMatl)
+t16<-table(db$Exterior1st)
+t17<-table(db$Exterior2nd)
+t18<-table(db$MasVnrType)
+t19<-table(db$ExterQual)
+t20<-table(db$ExterCond)
+t21<-table(db$Foundation)
+t22<-table(db$BsmtQual)
+t23<-table(db$BsmtCond)
+t24<-table(db$BsmtExposure)
+t25<-table(db$BsmtFinType1)
+t26<-table(db$BsmtFinType2)
+t27<-table(db$Heating)
+t28<-table(db$HeatingQC)
+t29<-table(db$CentralAir)
+t30<-table(db$Electrical)
+t31<-table(db$KitchenQual)
+t32<-table(db$Functional)
+t33<-table(db$FireplaceQu)
+t34<-table(db$GarageType)
+t35<-table(db$GarageFinish)
+t36<-table(db$GarageQual)
+t37<-table(db$GarageCond)
+t38<-table(db$PavedDrive)
+t39<-table(db$PoolQC)
+t40<-table(db$Fence)
+t41<-table(db$MiscFeature)
+t42<-table(db$SaleType)
+t43<-table(db$SaleCondition)
 ```
 
 ## Resumen de datos
@@ -95,7 +136,7 @@ summary(db)
 #### WoodDeckSF: Cuantitativa continua
 #### OpenPorchSF: Cuantitativa continua
 #### EnclosedPorch: Cuantitativa continua
-#### x3SsnPorch: Cuantitativa discreta
+#### x3SsnPorch: Cualitativa
 #### ScreenPorch: Cuantitativa continua
 #### PoolArea: Cuantitativa continua
 #### PoolQC: Cualitativa
@@ -134,11 +175,69 @@ hist(x = db$MiscVal)
 ### Discretas
 
 ```{r}
-
+plot(db$MSSubClass)
+plot(db$OverallQual)
+plot(db$OverallCond)
+plot(db$YearBuilt)
+plot(db$YearRemodAdd)
+plot(db$BsmtFullBath)
+plot(db$BsmtHalfBath)
+plot(db$FullBath)
+plot(db$HalfBath)
+plot(db$BedroomAbvGr)
+plot(db$KitchenAbvGr)
+plot(db$TotRmsAbvGrd)
+plot(db$Fireplaces)
+plot(db$GarageYrBlt)
+plot(db$GarageCars)
+plot(db$MoSold)
+plot(db$YrSold)
 ```
 
 ### Cualitativas
 
 ```{r}
-
+barplot(t1,  main = "MSZoning")
+barplot(t2,  main = "Street")
+barplot(t3,  main = "Alley")
+barplot(t4,  main = "LotShape")
+barplot(t5,  main = "LandContour")
+barplot(t6,  main = "Utilities")
+barplot(t7,  main = "LotConfig")
+barplot(t8,  main = "LandSlope")
+barplot(t9,  main = "Neighborhood")
+barplot(t10,  main = "Condition1")
+barplot(t11,  main = "Condition2")
+barplot(t12,  main = "BldgType")
+barplot(t13,  main = "HouseStyle")
+barplot(t14,  main = "RoofStyle")
+barplot(t15,  main = "RoofMatl")
+barplot(t16,  main = "Exterior1st")
+barplot(t17,  main = "Exterior2nd")
+barplot(t18,  main = "MasVnrType")
+barplot(t19,  main = "ExterQual")
+barplot(t20,  main = "ExterCond")
+barplot(t21,  main = "Foundation")
+barplot(t22,  main = "BsmtQual")
+barplot(t23,  main = "BsmtCond")
+barplot(t24,  main = "BsmtExposure")
+barplot(t25,  main = "BsmtFinType1")
+barplot(t26,  main = "BsmtFinType2")
+barplot(t27,  main = "Heating")
+barplot(t28,  main = "HeatingQC")
+barplot(t29,  main = "CentralAir")
+barplot(t30,  main = "Electrical")
+barplot(t31,  main = "KitchenQual")
+barplot(t32,  main = "Functional")
+barplot(t33,  main = "FireplaceQu")
+barplot(t34,  main = "GarageType")
+barplot(t35,  main = "GarageFinish")
+barplot(t36,  main = "GarageQual")
+barplot(t37,  main = "GarageCond")
+barplot(t38,  main = "PavedDrive")
+barplot(t39,  main = "PoolQC")
+barplot(t40,  main = "Fence")
+barplot(t41,  main = "MiscFeature")
+barplot(t42,  main = "SaleType")
+barplot(t43,  main = "SaleCondition")
 ```
