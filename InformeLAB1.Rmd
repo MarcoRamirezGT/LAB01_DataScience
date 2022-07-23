@@ -57,6 +57,13 @@ t40<-table(db$Fence)
 t41<-table(db$MiscFeature)
 t42<-table(db$SaleType)
 t43<-table(db$SaleCondition)
+
+df1<-data.frame(db$LotFrontage, db$LotArea, db$MasVnrArea, db$BsmtFinSF1, db$BsmtFinSF2, db$BsmtUnfSF)
+df2<-data.frame(db$TotalBsmtSF, db$X1stFlrSF, db$X2ndFlrSF, db$LowQualFinSF, db$GrLivArea, db$GarageArea)
+df3<-data.frame(db$WoodDeckSF, db$OpenPorchSF, db$EnclosedPorch, db$ScreenPorch, db$PoolArea, db$MiscVal)
+df4<-data.frame(db$MSSubClass, db$OverallQual, db$OverallCond, db$YearBuilt, db$YearRemodAdd, db$BsmtFullBath)
+df5<-data.frame(db$BsmtHalfBath, db$FullBath, db$HalfBath, db$BedroomAbvGr, db$KitchenAbvGr, db$TotRmsAbvGrd)
+df6<-data.frame(db$Fireplaces, db$GarageYrBlt, db$GarageCars, db$MoSold, db$YrSold)
 ```
 
 ## Resumen de datos
@@ -240,4 +247,15 @@ barplot(t40,  main = "Fence")
 barplot(t41,  main = "MiscFeature")
 barplot(t42,  main = "SaleType")
 barplot(t43,  main = "SaleCondition")
+```
+
+## Correlación de las variables numéricas
+
+```{r}
+corrplot::corrplot(cor(df1))
+corrplot::corrplot(cor(df2))
+corrplot::corrplot(cor(df3))
+corrplot::corrplot(cor(df4))
+corrplot::corrplot(cor(df5))
+corrplot::corrplot(cor(df6))
 ```
