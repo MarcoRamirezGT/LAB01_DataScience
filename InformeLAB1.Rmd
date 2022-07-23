@@ -1,0 +1,27 @@
+---
+title: "Laboratorio 1 Análisis Exploratorio"
+author: "Marco Ramirez 19588, Estuardo Hernandez 19202"
+date: '2022-07-23'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Análisis Exploratorio
+
+```{r include= FALSE}
+library(tibbletime)
+library(dplyr)
+library(tidyverse)
+
+
+db<-read.csv('train.csv')
+```
+
+## Resumen de datos
+
+```{r}
+summary(db)
+```
