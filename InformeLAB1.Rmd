@@ -25,3 +25,86 @@ db<-read.csv('train.csv')
 ```{r}
 summary(db)
 ```
+
+## Tipos de variables
+
+#### Id: Cuantitativa discreta
+#### MSSubClass: Cuantitativa discreta
+#### MSZoning: Cualitativa
+#### LotFrontage: Cuantitativa continua
+#### LotArea: Cuantitativa continua
+#### Street: Cualitativa
+#### Alley: Cualitativa
+#### LotShape: Cualitativa
+#### LandContour: Cualitativa
+#### Utilities: Cualitativa
+#### LotConfig: Cualitativa
+#### LandSlope: Cualitativa
+#### Neighborhood: Cualitativa
+#### Condition1: Cualitativa
+#### Condition2: Cualitativa
+#### BldgType: Cualitativa
+#### HouseStyle: Cualitativa
+#### OverallQual: Cuantitativa discreta
+#### OverallCond: Cuantitativa discreta
+#### YearBuilt: Cuantitativa discreta
+#### YearRemodAdd: Cuantitativa discreta
+#### RoofStyle: Cualitativa
+#### RoofMatl: Cualitativa
+#### Exterior1st: Cualitativa
+#### Exterior2nd: Cualitativa
+#### MasVnrType: Cualitativa
+#### MasVnrArea: Cuantitativa continua
+#### ExterQual: Cualitativa
+#### ExterCond: Cualitativa
+#### Foundation: Cualitativa
+#### BsmtQual: Cualitativa
+#### BsmtCond: Cualitativa
+#### BsmtExposure: Cualitativa
+#### BsmtFinType1: Cualitativa
+#### BsmtFinSF1: Cuantitativa continua
+#### BsmtFinType2: Cualitativa
+#### BsmtFinSF2: Cuantitativa continua
+#### BsmtUnfSF: Cuantitativa continua
+#### TotalBsmtSF: Cuantitativa continua
+#### Heating: Cualitativa
+#### HeatingQC: Cualitativa
+#### CentralAir: Cualitativa
+#### Electrical: Cualitativa
+#### X1stFlrSF: Cuantitativa continua
+#### X2ndFlrSF: Cuantitativa continua
+#### LowQualFinSF: Cuantitativa continua
+#### GrLivArea: Cuantitativa continua
+#### BsmtFullBath: Cuantitativa discreta
+#### BsmtHalfBath: Cuantitativa discreta
+#### FullBath: Cuantitativa discreta
+#### HalfBath: Cuantitativa discreta
+#### BedroomAbvGr: Cuantitativa discreta
+#### KitchenAbvGr: Cuantitativa discreta
+#### KitchenQual: Cualitativa
+#### TotRmsAbvGrd: Cuantitativa discreta
+#### Functional: Cualitativa
+#### Fireplaces: Cuantitativa discreta
+#### FireplaceQu: Cualitativa
+#### GarageType: Cualitativa
+#### GarageYrBlt: Cuantitativa discreta
+#### GarageFinish: Cualitativa
+#### GarageCars: Cuantitativa discreta
+#### GarageArea: Cuantitativa continua
+#### GarageQual: Cualitativa
+#### GarageCond: Cualitativa
+#### PavedDrive: Cualitativa
+#### WoodDeckSF: Cuantitativa continua
+#### OpenPorchSF: Cuantitativa continua
+#### EnclosedPorch: Cuantitativa continua
+#### x3SsnPorch: Cuantitativa continua
+#### ScreenPorch: Cuantitativa continua
+#### PoolArea: Cuantitativa continua
+#### PoolQC: Cualitativa
+#### Fence: Cualitativa
+#### MiscFeature: Cualitativa
+#### MiscVal: Cuantitativa continua
+#### MoSold: Cuantitativa discreta
+#### YrSold: Cuantitativa discreta
+#### SaleType: Cualitativa
+#### SaleCondition: Cualitativa
