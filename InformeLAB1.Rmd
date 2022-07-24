@@ -380,6 +380,12 @@ deter<-det(rcor)#Si el determinante de la matriz de correlación es cercano a 0 
 
 ```
 
+La variable SalePrice es cuantitativa continua y representa el precio de cada casa a la venta, es decir, cada casa del dataset analizado. Cabe mencionar que esta variable fue utilizada para clasificar las casas entre "Economica", "Intermedia" o "Cara", es decir, se creó una nueva variable para el dataset. A continuación se presenta de forma gráfica la variabe descrita.
+
+```{r}
+hist(x = db$SalePrice)
+```
+
 ## Verificar el determinante de la matriz de correlación es cercano a 0 significa que hay multicolinealidad
 
 ```{r}
@@ -546,4 +552,6 @@ Tras aplicar el algoritmo de apriori, se obtuvo 47 reglas, Tal como se observa e
 ## Conclusiones
 
 * Tras aplicar lo aprendido en clase, se logro obtener varios componentes, el cual cada uno demostro diferente categoria, tal como se comento anteriormente, esto facilitando la toma de datos de esta gran base de datos, obteniendo 7 componentes principales. 
-* La regla de asociacion nos permitio ver las relaciones que poseen cada elemento de la base de datos, datos que anteriormente no habiamos considerado, tal es el caso del precio de las casas con relacion a su tamano y no al acabado que tenia cada casa. 
+* La regla de asociacion nos permitio ver las relaciones que poseen cada elemento de la base de datos, datos que anteriormente no habiamos considerado, tal es el caso del precio de las casas con relacion a su tamano y no al acabado que tenia cada casa.
+* El determinante de la matriz de correlación es muy relevante para determinar la existencia de multicolinealidad.
+* La técnica de análisis de componentes principales es muy útil para reducir la dimensionalidad de un dataset.
