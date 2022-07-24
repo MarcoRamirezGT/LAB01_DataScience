@@ -6,7 +6,7 @@ install.packages("arules")
 
 
 library(arules)
-
+library(psych)
 library(FactoMineR)
 library(fpc)
 library(factoextra)
@@ -31,25 +31,44 @@ db$Estado[(db$SalePrice>129975 & db$SalePrice<=163000)] <- 'Intermedia'
 db$Estado[db$SalePrice>163000] <- 'Cara'
 
 
-#Cambio de tipo de columnas
+#Cambio de tipo de columnas a numerico, ya que necesitamos las variables numericas 
 
 db$SalePrice<-as.numeric(db$SalePrice)
 db$GrLivArea<-as.numeric(db$GrLivArea)
-db$GarageCars<-as.numeric(db$GarageCars)
+
+db$LotFrontage<-as.numeric(db$LotFrontage)
+db$LotArea<-as.numeric(db$LotArea)
 db$YearBuilt<-as.numeric(db$YearBuilt)
-db$GarageArea<-as.numeric(db$GarageArea)
+db$YearRemodAdd<-as.numeric(db$YearRemodAdd)
+db$MasVnrArea<-as.numeric(db$MasVnrArea)
+db$BsmtFinSF1<-as.numeric(db$BsmtFinSF1)
+db$BsmtFinSF2<-as.numeric(db$BsmtFinSF2)
+db$BsmtUnfSF<-as.numeric(db$BsmtUnfSF)
+db$TotalBsmtSF<-as.numeric(db$TotalBsmtSF)
 db$X1stFlrSF<-as.numeric(db$X1stFlrSF)
+db$X2ndFlrSF<-as.numeric(db$X2ndFlrSF)
+db$LowQualFinSF<-as.numeric(db$LowQualFinSF)
+
+db$GarageArea<-as.numeric(db$GarageArea)
+db$WoodDeckSF<-as.numeric(db$WoodDeckSF)
+db$OpenPorchSF<-as.numeric(db$OpenPorchSF)
+db$ScreenPorch<-as.numeric(db$ScreenPorch)
+db$EnclosedPorch<-as.numeric(db$EnclosedPorch)
+db$PoolArea<-as.numeric(db$PoolArea)
+db$MiscVal<-as.numeric(db$MiscVal)
+
+
 
 db$Estado<-as.factor(db$Estado)
 
 
 set.seed(123)
-datos<-data.frame(db$Estado,db$SalePrice,db$GrLivArea,db$GarageCars,db$YearBuilt,db$GarageArea,db$X1stFlrSF)
+datos<-data.frame(db$Estado,db$SalePrice,db$GrLivArea,db$LotFrontage,db$LotArea,db$YearBuilt,db$YearRemodAdd,db$MasVnrArea,db$BsmtFinSF1,db$BsmtFinSF2,db$BsmtUnfSF,db$TotalBsmtSF,db$X1stFlrSF,db$X2ndFlrSF,db$LowQualFinSF,db$GarageArea,db$WoodDeckSF,db$OpenPorchSF,db$ScreenPorch,db$EnclosedPorch,db$PoolArea,db$MiscVal)
 
-rcor<-cor(datos[,2:6],use = "pairwise.complete.obs")
+rcor<-cor(datos[,2:22],use = "pairwise.complete.obs")
 det(rcor)#Si el determinante de la matriz de correlación es cercano a 0 significa que hay multicolinealidad
 
-
+cortest.bartlett(datos[,-1])
 
 #se muestra la matriz de correlación
 cor(datos[,-1],use = "pairwise.complete.obs")
@@ -57,8 +76,8 @@ cor(datos[,-1],use = "pairwise.complete.obs")
 
 
 #Esta función normaliza los datos de una vez
-compPrinc<-prcomp(datos[,2:6], scale = T)
-compPrinc
+compPrinc<-prcomp(datos[,2:22], scale = T)
+
 
 
 summary(compPrinc)
@@ -74,8 +93,7 @@ summary(compPrincPCA)
 
 
 #Se obtiene el scree plot de las componentes principales.
-# Como se ve hacen falta 4 de las 7 componentes para explicar m?s del 80% de la variabilidad
-fviz_eig(compPrinc, addlabels = TRUE, ylim = c(0, 80))
+
 fviz_eig(compPrinc, addlabels = TRUE, choice = c("eigenvalue"), ylim = c(0, 3))
 
 fviz_pca_biplot(compPrinc,repel = F)
@@ -90,61 +108,66 @@ fviz_pca_var(compPrinc, col.var = "cos2",
 fviz_contrib(compPrinc, choice = "var", axes = 1, top = 10) #Dimensión 1
 fviz_contrib(compPrinc, choice = "var", axes = 2, top = 10) #Dimensión 2
 fviz_contrib(compPrinc, choice = "var", axes = 3, top = 10) #Dimensión 3
+fviz_contrib(compPrinc, choice = "var", axes = 4, top = 10) #Dimensión 4
+fviz_contrib(compPrinc, choice = "var", axes = 5, top = 10) #Dimensión 5
+fviz_contrib(compPrinc, choice = "var", axes = 6, top = 10) #Dimensión 6
+fviz_contrib(compPrinc, choice = "var", axes = 7, top = 10) #Dimensión 7
 
 var<-get_pca_var(compPrinc)
 corrplot(var$cos2, is.corr = F)
 
-
-# TRABAJANDO CON IRIS
-pafIris <- paf(as.matrix(iris[,1:4]))
-pafIris$KMO #La adecuaci?n muestral no es buena
-
-cortest.bartlett(iris[,1:4])
-
-irisPCA <- PCA(iris[,1:4])
-summary(irisPCA)
-# Con las primeras 2 dimensiones se explica el 95% de la variancia del conjunto de datos
-# En la primera dimensi?n est?n muy bien representadas las variables Petal.Length y Petal.Width
-# En la segunda dimensi?n se pueden incluir las variables Sepal.Width y Sepal.Length
-# Estas dos primeras componentes se puede interpretar de la siguiente forma:
-# PC1: Medidas del P?talo
-# PC2: Medidas del sépalo
-
-#Scree Plot
-fviz_eig(irisPCA, addlabels = TRUE, ylim = c(0, 80))
-fviz_eig(irisPCA, addlabels = TRUE,choice = c("eigenvalue"), ylim = c(0, 3))
-
-
-#Representaci?n de las variables en cada componente
-
-fviz_contrib(irisPCA, choice = "var", axes = 1, top = 10)
-fviz_contrib(irisPCA, choice = "var", axes = 2, top = 10)
-
-
-fviz_pca_var(irisPCA, col.var = "cos2",
-             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
-             repel = TRUE # Avoid text overlapping
-)
-
-#Representaci?n de cada variable en cada componente
-var<-get_pca_var(irisPCA)
-corrplot(var$cos2, is.corr = F)
-#Seg?n la representaci?n de las variables en las componentes se podr?a incluir en la dimensi?n 1 pero la interpretabilidad del componente principal ser?a m?s complicada.
 
 
 
 # REGLAS DE ASOCIACI?N
 
 
-# El m?nimo nivel de soporte y confianza aceptados
+
+
+datos$db.LotFrontage[datos$db.LotFrontage==0] <- 63
+datos$db.MasVnrArea[datos$db.MasVnrArea==0] <- 103.1
+datos$db.BsmtFinSF1    [datos$db.BsmtFinSF1   ==0] <- 383.5
+datos$db.BsmtFinSF2[datos$db.BsmtFinSF2==0] <- 46.55
+datos$db.BsmtUnfSF[datos$db.BsmtUnfSF==0] <- 567.2
+
+
+
+datos$db.SalePrice<-as.numeric(datos$db.SalePrice)
+datos$db.GrLivArea<-as.factor(datos$db.GrLivArea)
+datos$db.LotFrontage<-as.factor(datos$db.LotFrontage)
+datos$db.LotArea<-as.factor(datos$db.LotArea)
+datos$db.YearBuilt<-as.factor(datos$db.YearBuilt)
+datos$db.YearRemodAdd<-as.factor(datos$db.YearRemodAdd)
+datos$db.MasVnrArea<-as.factor(datos$db.MasVnrArea)
+datos$db.BsmtFinSF1<-as.factor(datos$db.BsmtFinSF1)
+datos$db.BsmtFinSF2<-as.factor(datos$db.BsmtFinSF2)
+datos$db.BsmtUnfSF<-as.factor(datos$db.BsmtUnfSF)
+
+datos$db.TotalBsmtSF<-as.factor(datos$db.TotalBsmtSF)
+datos$db.X1stFlrSF<-as.factor(datos$db.X1stFlrSF)
+datos$db.X2ndFlrSF<-as.factor(datos$db.X2ndFlrSF)
+datos$db.LowQualFinSF<-as.factor(datos$db.LowQualFinSF)
+
+datos$db.GarageArea<-as.factor(datos$db.GarageArea)
+datos$db.WoodDeckSF<-as.factor(datos$db.WoodDeckSF)
+datos$db.OpenPorchSF<-as.factor(datos$db.OpenPorchSF)
+datos$db.ScreenPorch<-as.factor(datos$db.ScreenPorch)
+datos$db.EnclosedPorch<-as.factor(datos$db.EnclosedPorch)
+datos$db.PoolArea<-as.factor(datos$db.PoolArea)
+datos$db.MiscVal<-as.factor(datos$db.MiscVal)
+
+# 
+
+
+# row_sub = apply(datos, 1, function(row) all(row !=0 ))
+# 
+# View(datos)
+# ##Subset as usual
+# datos[row_sub,]
+
+
 str(datos)
-datos$db.SalePrice <- as.factor(datos$db.SalePrice)
-datos$db.GrLivArea <- as.factor(datos$db.GrLivArea)
-datos$db.GarageCars <- as.factor(datos$db.GarageCars)
-datos$db.GarageArea <- as.factor(datos$db.GarageArea)
-
-
-reglas<-apriori(datos[, c(2,3,5)], parameter = list(support = 0.2,
+reglas<-apriori(datos[ ,2:16 ], parameter = list(support = 0.2,
                                                        confidence = 0.70,
                                                        target = "rules"))
 inspect(reglas)

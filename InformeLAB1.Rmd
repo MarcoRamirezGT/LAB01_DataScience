@@ -307,3 +307,243 @@ t41
 t42
 t43
 ```
+
+
+```{r warning=FALSE}
+
+
+
+library(arules)
+library(psych)
+library(FactoMineR)
+library(fpc)
+library(factoextra)
+library(corrplot)
+
+
+
+db<-read.csv('train.csv')
+
+#Quitar nulos
+db[is.na(db)] <- 0
+#Calculo de percentiles
+percentil <- quantile(db$SalePrice)
+#Percentiles
+estado<-c('Estado')
+db$Estado<-estado
+#Economica=0
+#Intermedia=1
+#Cara=2
+db <- within(db, Estado[SalePrice<=129975] <- 'Economica')
+db$Estado[(db$SalePrice>129975 & db$SalePrice<=163000)] <- 'Intermedia'
+db$Estado[db$SalePrice>163000] <- 'Cara'
+
+
+#Cambio de tipo de columnas a numerico, ya que necesitamos las variables numericas 
+
+db$SalePrice<-as.numeric(db$SalePrice)
+db$GrLivArea<-as.numeric(db$GrLivArea)
+
+db$LotFrontage<-as.numeric(db$LotFrontage)
+db$LotArea<-as.numeric(db$LotArea)
+db$YearBuilt<-as.numeric(db$YearBuilt)
+db$YearRemodAdd<-as.numeric(db$YearRemodAdd)
+db$MasVnrArea<-as.numeric(db$MasVnrArea)
+db$BsmtFinSF1<-as.numeric(db$BsmtFinSF1)
+db$BsmtFinSF2<-as.numeric(db$BsmtFinSF2)
+db$BsmtUnfSF<-as.numeric(db$BsmtUnfSF)
+db$TotalBsmtSF<-as.numeric(db$TotalBsmtSF)
+db$X1stFlrSF<-as.numeric(db$X1stFlrSF)
+db$X2ndFlrSF<-as.numeric(db$X2ndFlrSF)
+db$LowQualFinSF<-as.numeric(db$LowQualFinSF)
+
+db$GarageArea<-as.numeric(db$GarageArea)
+db$WoodDeckSF<-as.numeric(db$WoodDeckSF)
+db$OpenPorchSF<-as.numeric(db$OpenPorchSF)
+db$ScreenPorch<-as.numeric(db$ScreenPorch)
+db$EnclosedPorch<-as.numeric(db$EnclosedPorch)
+db$PoolArea<-as.numeric(db$PoolArea)
+db$MiscVal<-as.numeric(db$MiscVal)
+
+
+#La variable predictora como factor
+db$Estado<-as.factor(db$Estado)
+
+#Experimento repetiblee
+set.seed(123)
+datos<-data.frame(db$Estado,db$SalePrice,db$GrLivArea,db$LotFrontage,db$LotArea,db$YearBuilt,db$YearRemodAdd,db$MasVnrArea,db$BsmtFinSF1,db$BsmtFinSF2,db$BsmtUnfSF,db$TotalBsmtSF,db$X1stFlrSF,db$X2ndFlrSF,db$LowQualFinSF,db$GarageArea,db$WoodDeckSF,db$OpenPorchSF,db$ScreenPorch,db$EnclosedPorch,db$PoolArea,db$MiscVal)
+#
+rcor<-cor(datos[,2:22],use = "pairwise.complete.obs")
+deter<-det(rcor)#Si el determinante de la matriz de correlación es cercano a 0 significa que hay multicolinealidad
+
+
+
+```
+
+## Verificar el determinante de la matriz de correlación es cercano a 0 significa que hay multicolinealidad
+
+```{r}
+deter
+```
+Como se observa el determinantee de la matriz de correlacion es cercano a 0, por ende, significa que existe multicolinealidad. 
+Sin embargo tambien debemos de ver el nivel de significacion de la prueba de Barlett donde la hipotesis nula es, la matriz de correlaciones es igual a la matriz de identidad, en este caso buscamos rechazar la hipotesis nula.
+
+```{r}
+cortest.bartlett(datos[,-1])
+```
+Se observa que el valor de P es de 0, siendo menor a 0.05, indicando que el analisis factorial puede funcionar. 
+Ademas, podemos mostrar la matriz de correlacion para fines de aprendizaje.
+
+```{r}
+#se muestra la matriz de correlación
+cor(datos[,-1],use = "pairwise.complete.obs")
+
+
+```
+Con esto logramos ver mucha informacion relevante, donde podemos observar que el precio de las casas estan altamente relacionados con el tamano de construccion de la casa (pies cuadrados de construccion), ademas que tambien depende del tamano de la propiedad, otro dato interesante es que el precio de las casas depende del ano de remodelacion y el area de mamposteria que tenga la construccion. No obstante, se encontro que el precio de los acabados de la casa no influye mucho el precio de la casa. 
+
+
+```{r}
+
+#Esta función normaliza los datos de una vez
+compPrinc<-prcomp(datos[,2:22], scale = T)
+
+
+
+summary(compPrinc)
+
+```
+Como se observa anteriormente, los primeros 7 componentes creados son los mas importantes, ya que tienen una desviacion estandar mayor a 1, a diferencia del componente 21 que tiene cifras negativas. 
+Ademas, Podemos observar los primeros 7 componentes en el circulo de correlaciones.
+
+```{r}
+compPrincPCA<-PCA(datos[,-1],ncp=ncol(datos[,-1]), scale.unit = T)
+
+summary(compPrincPCA)
+
+
+```
+
+```{r}
+
+#Se obtiene el scree plot de las componentes principales.
+
+fviz_eig(compPrinc, addlabels = TRUE, choice = c("eigenvalue"), ylim = c(0, 3))
+
+```
+
+Tal como se ve en la grafica anterior, los componentes con eigenvalores mas elevados son del 8 para arriba, ademas, el scree plot solo nos muestra los primeros 10 componentes de los 21.
+En la siguiente gráfica se ilustra la calidad de la representación de los componentes en las dos primeras dimensiones.
+
+```{r warning=FALSE}
+fviz_pca_var(compPrinc, col.var = "cos2",
+             gradient.cols = c("#0FE8F3", "#F30F19", "#79E915"), 
+             repel = TRUE # Avoid text overlapping
+)
+
+```
+A continuacion veremos la contribucion de las variables en las primeras 7 dimensiones
+
+```{r}
+fviz_contrib(compPrinc, choice = "var", axes = 1, top = 10) #Dimensión 1
+
+
+```
+Como podemos observar este primer componente lo podemos represantar como el tamano de la propiedad, ya que TotalBsmtSF es el tamano base que tiene el terreno, contando tambien que en este componente, vemos la variable de tamano de viviendo, area de jardin, y tamano del garage, entre otros. 
+
+```{r}
+
+fviz_contrib(compPrinc, choice = "var", axes = 2, top = 10) #Dimensión 2
+```
+Este componente lo podemos ver represantado en el tamano de la casa, sobre todo por la cantidad de niveles que posee. 
+```{r}
+fviz_contrib(compPrinc, choice = "var", axes = 3, top = 10) #Dimensión 3
+```
+Este componente lo podemos ver represantado como la longevidad de la casa, ya que abarca desde al ano de construccion hasta cuando fue remodelada, asi como si se ha concluido sus construcciones. 
+
+```{r}
+fviz_contrib(compPrinc, choice = "var", axes = 4, top = 10) #Dimensión 4
+```
+Este componente puede represantarse como el tamano de las casas de 1 nivel. 
+
+```{r}
+fviz_contrib(compPrinc, choice = "var", axes = 5, top = 10) #Dimensión 5
+```
+Este componente vemos represantado si la propiedad cuenta con un garage cerrado o no, ademas si este se encuentra disponible para su uso.
+
+```{r}
+fviz_contrib(compPrinc, choice = "var", axes = 6, top = 10) #Dimensión 6
+
+```
+Este componente abarca sobre el suelo de la propiedad.
+
+```{r}
+fviz_contrib(compPrinc, choice = "var", axes = 7, top = 10) #Dimensión 7
+```
+
+El ultimo componente nos habla sobre los acabado que posee cada casa. 
+
+A continuacion veremos la representacion de cada variable en cada componente.
+
+```{r}
+var<-get_pca_var(compPrinc)
+corrplot(var$cos2, is.corr = F)
+
+
+```
+
+## Reglas de asociacion
+
+Se realizo las reglas de asociacion con una confianza de 0.7 y soporte de 0.2, donde se obtuvo lo siguiente: 
+
+```{r warning=FALSE}
+
+
+
+
+datos$db.LotFrontage[datos$db.LotFrontage==0] <- 63
+datos$db.MasVnrArea[datos$db.MasVnrArea==0] <- 103.1
+datos$db.BsmtFinSF1    [datos$db.BsmtFinSF1   ==0] <- 383.5
+datos$db.BsmtFinSF2[datos$db.BsmtFinSF2==0] <- 46.55
+datos$db.BsmtUnfSF[datos$db.BsmtUnfSF==0] <- 567.2
+
+
+
+datos$db.SalePrice<-as.numeric(datos$db.SalePrice)
+datos$db.GrLivArea<-as.factor(datos$db.GrLivArea)
+datos$db.LotFrontage<-as.factor(datos$db.LotFrontage)
+datos$db.LotArea<-as.factor(datos$db.LotArea)
+datos$db.YearBuilt<-as.factor(datos$db.YearBuilt)
+datos$db.YearRemodAdd<-as.factor(datos$db.YearRemodAdd)
+datos$db.MasVnrArea<-as.factor(datos$db.MasVnrArea)
+datos$db.BsmtFinSF1<-as.factor(datos$db.BsmtFinSF1)
+datos$db.BsmtFinSF2<-as.factor(datos$db.BsmtFinSF2)
+datos$db.BsmtUnfSF<-as.factor(datos$db.BsmtUnfSF)
+
+datos$db.TotalBsmtSF<-as.factor(datos$db.TotalBsmtSF)
+datos$db.X1stFlrSF<-as.factor(datos$db.X1stFlrSF)
+datos$db.X2ndFlrSF<-as.factor(datos$db.X2ndFlrSF)
+datos$db.LowQualFinSF<-as.factor(datos$db.LowQualFinSF)
+
+datos$db.GarageArea<-as.factor(datos$db.GarageArea)
+datos$db.WoodDeckSF<-as.factor(datos$db.WoodDeckSF)
+datos$db.OpenPorchSF<-as.factor(datos$db.OpenPorchSF)
+datos$db.ScreenPorch<-as.factor(datos$db.ScreenPorch)
+datos$db.EnclosedPorch<-as.factor(datos$db.EnclosedPorch)
+datos$db.PoolArea<-as.factor(datos$db.PoolArea)
+datos$db.MiscVal<-as.factor(datos$db.MiscVal)
+
+reglas<-apriori(datos[ ,2:16 ], parameter = list(support = 0.2,
+                                                       confidence = 0.70,
+                                                       target = "rules"))
+inspect(reglas)
+
+```
+
+
+Tras aplicar el algoritmo de apriori, se obtuvo 47 reglas, Tal como se observa en la regla 8, cuando el precio de la casa es de 34,900 a 140,000 esta tiene una area de construccion de 103.1 pies cuadrados. Otro dato interesante es que cuando el area de construccion es de 103.1 signfica que la casa tiene mas de 1 nivel de construccion. 
+
+## Conclusiones
+
+* Tras aplicar lo aprendido en clase, se logro obtener varios componentes, el cual cada uno demostro diferente categoria, tal como se comento anteriormente, esto facilitando la toma de datos de esta gran base de datos, obteniendo 7 componentes principales. 
+* La regla de asociacion nos permitio ver las relaciones que poseen cada elemento de la base de datos, datos que anteriormente no habiamos considerado, tal es el caso del precio de las casas con relacion a su tamano y no al acabado que tenia cada casa. 
